@@ -1,0 +1,130 @@
+sudo apt install mysql-server
+
+mysql --version
+
+sudo mysql
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'mynewpassword';
+
+sudo mysql_secure_installation
+
+mysql -u root -p
+
+to check port number: 
+mysql> SHOW GLOBAL VARIABLES LIKE 'PORT';
+
+---------------------------
+user is only allowed to connect to the database server from the localhost. So, we need to update the user’s hosts
+
+mysql> SELECT host FROM mysql.user WHERE user = "root";
++-----------+
+| host      |
++-----------+
+| localhost |
+
+after running above command:
+
+mysql> SELECT host FROM mysql.user WHERE user = "root";
++-----------+
+| host      |
++-----------+
+| %         |
+| localhost |
+
+
+---------------------------
+
+steps to grant all privileges to the root user in db server.
+
+mysql> CREATE USER 'root'@'%' IDENTIFIED BY 'SAVEearth16$';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.01 sec)
+
+----------------------------------
+
+from app server to connect db server.
+mysql --host=10.0.1.168 --user=root --password=SAVEearth16$
+
+
+
+------------------------------
+
+to install pip module.
+
+sudo nano /etc/apt/sources.list
+And add these lines.
+
+deb http://archive.ubuntu.com/ubuntu bionic main universe
+deb http://archive.ubuntu.com/ubuntu bionic-security main universe 
+deb http://archive.ubuntu.com/ubuntu bionic-updates main universe
+Press Ctrl+O to save the file. Press Ctrl+X to quit nano.
+
+Then run:
+
+sudo apt update
+sudo apt install python3-pip
+
+------------------------------
+
+to install mysql connector
+sudo python3 -m pip install mysql-connector-python
+
+------------------------------
+
+configure python cgi
+https://www.server-world.info/en/note?os=Ubuntu_18.04&p=httpd&f=5
+
+cgi-programs examples
+https://codeandcache.com/article/python-basic-tutorial-ten-cgi-programming-mysql-database?id=707728
+
+----------------------
+apache logs
+cat /var/log/apache2/error.log
+
+sudo service apache2 restart
+
+chmod 705 /var/www/html/cgi-enabled/index.py
+
+if its doesn't work, we have to copy the uploaded python file from windows, to another .py file which created in linux.
+
+------------------------------------------------------
+
+to push from terminal to github
+
+created a repo called public_submit-form_private_database.git in github. then clone usin below command
+ubuntu@ip-10-0-0-98:/var/www/html$ sudo git clone https://github.com/midhunmenon99-hub/public_submit-form_private_database.git
+
+ubuntu@ip-10-0-0-98:/var/www/html$ cd public_submit-form_private_database
+
+sudo cp project1.py submit.php submit.py new.py index.html /var/www/html/public_submit-form_private_database
+
+sudo cp -r cgi-enabled /var/www/html/public_submit-form_private_database
+
+git config --global --add safe.directory /var/www/html/public_submit-form_private_database
+
+sudo git config user.email "midhunmenon99@gmail.com"
+
+sudo git add --all
+
+sudo git commit -m "firstcode"
+
+ sudo git push
+Username for 'https://github.com': midhunmenon99-hub
+Password for 'https://midhunmenon99-hub@github.com':
+
+Need to generate personal access token as the password. link to generate that:https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+
+
+
+
+
+
+
+
+
+
